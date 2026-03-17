@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Double N Digital — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --violet:    #42267A;
+      --periwinkle:#A78BFA;
+      --gold:      #FBBF24;
+      --charcoal:  #374151;
+      --jet:       #1F2937;
+      --steel:     #4B5563;
+      --slate:     #94A3B8;
+      --snow:      #F9FAFB;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Outfit', sans-serif;
+      background: var(--jet);
+      color: var(--snow);
+      overflow: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GRADIENT BLOBS ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #42267A88, transparent 70%);
+      top: -200px; left: -150px;
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #FBBF2444, transparent 70%);
+      bottom: -100px; right: -100px;
+      animation: drift2 15s ease-in-out infinite alternate;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #A78BFA33, transparent 70%);
+      top: 50%; left: 55%;
+      animation: drift3 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 { to { transform: translate(40px, 60px); } }
+    @keyframes drift2 { to { transform: translate(-40px, -30px); } }
+    @keyframes drift3 { to { transform: translate(20px, -50px); } }
+
+    /* ── LAYOUT ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 40px 56px;
+    }
+
+    /* ── TOP BAR ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--violet);
+      border: 2px solid var(--periwinkle);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--snow);
+      letter-spacing: -1px;
+    }
+
+    .logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--slate);
+      letter-spacing: 0.02em;
+    }
+
+    .badge {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gold);
+      border: 1px solid #FBBF2444;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: #FBBF2411;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CENTER ── */
+    main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--periwinkle);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    h1 {
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+
+    h1 .line1 { display: block; color: var(--snow); }
+    h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--periwinkle), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 400;
+      color: var(--slate);
+      line-height: 1.6;
+      max-width: 540px;
+      margin-bottom: 0;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.9s;
+    }
+
+    .tagline strong {
+      color: var(--snow);
+      font-weight: 600;
+    }
+
+
+
+    /* ── BOTTOM ── */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1.3s;
+    }
+
+    .duo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar-wrap {
+      display: flex;
+    }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--jet);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .avatar:nth-child(1) {
+      background: var(--violet);
+      color: var(--snow);
+      z-index: 2;
+    }
+    .avatar:nth-child(2) {
+      background: var(--periwinkle);
+      color: var(--jet);
+      margin-left: -10px;
+      z-index: 1;
+    }
+
+    .duo-text {
+      font-size: 13px;
+      color: var(--steel);
+    }
+    .duo-text strong { color: var(--slate); font-weight: 500; }
+
+    .gold-dot {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--steel);
+      display: flex;
+      align-items: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .page { padding: 28px 24px; }
+      .notify-form { flex-direction: column; }
+      .notify-form input { width: 100%; }
+      footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="page">
+    <header>
+      <div class="logo">
+        <div class="logo-mark">NN</div>
+        <span class="logo-name">Double N Digital</span>
+      </div>
+      <span class="badge">Uskoro</span>
+    </header>
+
+    <main>
+      <p class="eyebrow">Web Design &amp; Digital Agency</p>
+      <h1>
+        <span class="line1">Vaš sajt,</span>
+        <span class="line2">kako treba.</span>
+      </h1>
+      <p class="tagline">
+        Dve drugarice koje se jako trude da vaši sajtovi budu lepi i šareni —
+        <strong>stižemo brzo.</strong>
+      </p>
+
+    </main>
+
+    <footer>
+      <div class="duo">
+        <div class="avatar-wrap">
+          <div class="avatar">N</div>
+          <div class="avatar">N</div>
+        </div>
+        <p class="duo-text">Nina &amp; Natalija</p>
+      </div>
+      <p class="status"><span class="gold-dot"></span>Sajt u izradi</p>
+    </footer>
+  </div>
+
+
+</body>
+</html>
